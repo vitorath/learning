@@ -1,14 +1,26 @@
+// Events: https://www.w3schools.com/tags/ref_eventattributes.asp
+// Events Modifiers: https://vuejs.org/v2/guide/events.html#Event-Modifiers
 new Vue({
   el: '#vue-app',
   data: {
-    name: 'Vitor',
-    job: 'AI Programmer',
-    website: 'https://www.google.com',
-    websiteTag: '<a href="https://www.google.com">Google</a>'
+    age: 24,
+    x: 0,
+    y: 0
   },
   methods: {
-    greet: function(time) {
-      return 'Good ' + time + ' ' + this.name;
+    add: function(inc) {
+      this.age += inc;
+    },
+    subtract: function(dec) {
+      this.age -= dec;
+    },
+    updateXY: function(event) {
+      console.log(event);
+      this.x = event.offsetX;
+      this.y = event.offsetY;
+    },
+    click: function() {
+      alert('You clicked me');
     }
   }
 });
