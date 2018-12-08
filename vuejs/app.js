@@ -3,24 +3,17 @@
 new Vue({
   el: '#vue-app',
   data: {
-    age: 24,
-    x: 0,
-    y: 0
+
   },
   methods: {
-    add: function(inc) {
-      this.age += inc;
+    logName: function() {
+      console.log("Log keyup Name");
     },
-    subtract: function(dec) {
-      this.age -= dec;
+    logAge: function() {
+      console.log("Log keyup enter Age");
     },
-    updateXY: function(event) {
-      console.log(event);
-      this.x = event.offsetX;
-      this.y = event.offsetY;
-    },
-    click: function() {
-      alert('You clicked me');
+    logJob: function() {
+        console.log("Log keyup alt + enter Job");
     }
   }
 });
