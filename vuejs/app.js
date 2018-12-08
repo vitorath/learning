@@ -3,17 +3,9 @@
 new Vue({
   el: '#vue-app',
   data: {
-
+    name: '',
+    age: ''
   },
   methods: {
-    logName: function() {
-      console.log("Log keyup Name");
-    },
-    logAge: function() {
-      console.log("Log keyup enter Age");
-    },
-    logJob: function() {
-        console.log("Log keyup alt + enter Job");
-    }
   }
 });
