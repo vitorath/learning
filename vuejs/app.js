@@ -1,35 +1,23 @@
-// Events: https://www.w3schools.com/tags/ref_eventattributes.asp
-// Events Modifiers: https://vuejs.org/v2/guide/events.html#Event-Modifiers
-var one = new Vue({
-  el: '#vue-app-one',
-  data: {
-    title: 'Vue App One'
+// data is one function, because the variables are local without influence another instance of this component
+Vue.component('greeting', {
+  template: '<p>Hey there, I am a {{ name }}. <button v-on:click="changeName">Change Name</button></p>',
+  data: function() {
+    return {
+      name: "Vitor"
+    }
   },
   methods: {
-
-  },
-  computed: {
-    greet: function() {
-      return 'Hello from App One';
+    changeName: function() {
+      this.name = "Join";
     }
   }
+});
+
+
+var one = new Vue({
+  el: '#vue-app-one',
 });
 
 var two = new Vue({
   el: '#vue-app-two',
-  data: {
-    title: 'Vue App Two'
-  },
-  methods: {
-    changeTitle: function() {
-      one.title = "Title changed";
-    }
-  },
-  computed: {
-    greet: function() {
-      return 'Hello from App Two';
-    }
-  }
 });
-
-two.title = "Changed from outside";
