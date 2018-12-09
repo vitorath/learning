@@ -1,23 +1,14 @@
-// data is one function, because the variables are local without influence another instance of this component
-Vue.component('greeting', {
-  template: '<p>Hey there, I am a {{ name }}. <button v-on:click="changeName">Change Name</button></p>',
-  data: function() {
-    return {
-      name: "Vitor"
-    }
+new Vue({
+  el: '#vue-app',
+  data: {
+    output: 'Your fav food'
   },
   methods: {
-    changeName: function() {
-      this.name = "Join";
+    readRefs: function() {
+      console.log(this.$refs);
+      console.log(this.$refs.input.value);
+      console.log(this.$refs.test.innerText);
+      this.output = this.$refs.input.value;
     }
   }
-});
-
-
-var one = new Vue({
-  el: '#vue-app-one',
-});
-
-var two = new Vue({
-  el: '#vue-app-two',
 });

@@ -7,14 +7,12 @@
     <title></title>
   </head>
   <body>
-    <h1>Components</h1>
-    <div id="vue-app-one">
-      <h2>Vue App One</h2>
-      <greeting></greeting>
-    </div>
-    <div id="vue-app-two">
-      <h2>Vue App One</h2>
-      <greeting></greeting>
+    <div id="vue-app">
+      <h1>Refs</h1>
+      <input type="text" ref="input"/>
+      <button type="button" v-on:click="readRefs">Submit</button>
+      <p>Your fav food: {{ output }}</p>
+      <div ref="test">Hello</div>
     </div>
     <script type="text/javascript" src="app.js"></script>
   </body>
