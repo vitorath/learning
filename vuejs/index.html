@@ -1,19 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="https://unpkg.com/vue"></script>
-    <title></title>
+    <title>vuejs</title>
   </head>
   <body>
-    <div id="vue-app">
-      <h1>Refs</h1>
-      <input type="text" ref="input"/>
-      <button type="button" v-on:click="readRefs">Submit</button>
-      <p>Your fav food: {{ output }}</p>
-      <div ref="test">Hello</div>
-    </div>
-    <script type="text/javascript" src="app.js"></script>
+    <div id="app"></div>
+    <script src="/dist/build.js"></script>
   </body>
 </html>
