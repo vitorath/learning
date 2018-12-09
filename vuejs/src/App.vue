@@ -22,5 +22,7 @@ export default {
 </script>
 
 <style>
-
+  h1 {
+    color: green;
+  }
 </style>
