@@ -1,7 +1,7 @@
 <!-- Reference Type: the variable is insert using props. If in any components it's edit, its change the original -->
 <template>
   <div>
-    <app-header v-bind:title="title"></app-header>
+    <app-header v-bind:title="title" v-on:changeTitle="updateTitle($event)"></app-header>
     <app-ninjas v-bind:ninjas="ninjas"></app-ninjas>
     <hr/>
     <app-ninjas v-bind:ninjas="ninjas"></app-ninjas>
@@ -31,6 +31,11 @@ export default {
         {name: 'Kami', speciality: 'Webpack', show: false}
       ],
       title: 'Vue Ninjas'
+    }
+  },
+  methods: {
+    updateTitle: function(title) {
+      this.title = title;
     }
   }
 }

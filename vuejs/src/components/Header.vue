@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     changeTitle: function() {
-      this.title = "Vue Vitor";
+      this.$emit("changeTitle", "Vue Vitor");
     }
   }
 }
