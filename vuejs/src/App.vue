@@ -1,8 +1,11 @@
+<!-- Reference Type: the variable is insert using props. If in any components it's edit, its change the original -->
 <template>
   <div>
-    <app-header></app-header>
+    <app-header v-bind:title="title"></app-header>
     <app-ninjas v-bind:ninjas="ninjas"></app-ninjas>
-    <app-footer></app-footer>
+    <hr/>
+    <app-ninjas v-bind:ninjas="ninjas"></app-ninjas>
+    <app-footer v-bind:title="title"></app-footer>
   </div>
 </template>
 
@@ -26,7 +29,8 @@ export default {
         {name: 'Crystal', speciality: 'HTML Wizardry', show: false},
         {name: 'Tango', speciality: 'Conditionals', show: false},
         {name: 'Kami', speciality: 'Webpack', show: false}
-      ]
+      ],
+      title: 'Vue Ninjas'
     }
   }
 }
