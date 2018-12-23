@@ -10,7 +10,8 @@ Vue.use(VueResource)
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  routes: Routes
+  routes: Routes,
+  mode: 'history' // The default is hash, into path /#/
 })
 
 new Vue({
