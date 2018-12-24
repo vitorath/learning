@@ -1,5 +1,6 @@
 # Vuejs 2
 
+> vue crete 'name'
 >npm install vue-router
 >npm install vue-resource
 
