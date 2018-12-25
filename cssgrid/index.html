@@ -8,15 +8,19 @@
         }
         #content {
             display: grid;
-            /* grid-template-columns: 30% 20% 50%; */
-            /* grid-template-columns: 1fr 2fr 1fr; */
-            grid-template-columns: repeat(9, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, minmax(200ṕx, auto));
+            /* grid-auto-rows: minmax(200px, auto); */
+            /* grid-column-gap: 5px; */
+            /* grid-row-gap: 5px; */
+            grid-gap: 5px;
             max-width: 960px;
             margin: 0 auto;
         }
         #content div {
             background-color: #3bbced;
             padding: 30px;
+            /* margin: 5px; */
         }
         #content div:nth-child(even) {
             background-color: #777;
