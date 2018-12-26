@@ -42,3 +42,25 @@ Vue GUI (management)
 
 [The Net Ninja CSS Grid](https://www.youtube.com/watch?v=x7tLPhnA06w&list=PL4cUxeGkcC9itC4TxYMzFCfveyutyPOCY)
 
+# CSS Flex
+
+# 
+
+#### Flex Container
+
+Display flex is used for organize the elements in line.
+'''CSS
+display: flex
+'''
+
+#### Flex Grow
+
+Using display flex is possible specify one value that flex-grow
+'''CSS
+flex-grow: 1
+'''
+
+#### Flex Shrink 
+
+Quando maior velor menor o espaço que fica
+
