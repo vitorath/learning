@@ -21,24 +21,21 @@ body {
 
 .box {
     height: 100px;
-    min-width: 100px;
-    /* In here all block will even have width
-        flex-grow: 1; 
-    */
+    min-width: 320px;
 }
 
 .one {
     background: red;
-    flex-grow: 3;
+    flex-shrink: 1;
 }
 
 .two {
     background: blue;
-    flex-grow: 2;
+    flex-shrink: 5;
 }
 
 .three {
     background: green;
-    flex-grow: 1;
+    flex-shrink: 6;
 }
 /* Flex Container: End */
