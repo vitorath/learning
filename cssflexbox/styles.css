@@ -13,33 +13,39 @@ body {
     margin: 0 auto;
 }
 
-/* Flex Container: Start */
-.flex-container {
-    display: flex;
-    background: #fff;
-    flex-wrap: wrap;
+/* menu base styles */
+
+nav {
+    background: #333;
 }
 
-.box {
-    height: 100px;
-    /* flex-basis: 200px; */
-    flex-grow: 1;
-    /* flex: 1 0 200px; */
-    /* flex: 1; */
+nav ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.one {
-    background: red;
-    flex-basis: 100px;
+nav a {
+    text-decoration: none;
+    /* text-align: center; */
+    color: #fff;
+    display: block;
+    padding: 10px;
 }
 
-.two {
-    background: blue;
-    flex-basis: 200px;
+nav a:hover {
+    background-color: #555;
 }
 
-.three {
-    background: green;
-    flex-basis: 300px;
+/* flex styles */
+@media screen and (min-width: 768px) {
+    
+    nav ul {
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    nav li {
+        flex: 1 1 0;
+    }
+
 }
-/* Flex Container: End */
