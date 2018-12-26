@@ -17,25 +17,29 @@ body {
 .flex-container {
     display: flex;
     background: #fff;
+    flex-wrap: wrap;
+    /*
+        wrap
+        wrap-reverse
+        nowrap
+    */
 }
 
 .box {
     height: 100px;
-    min-width: 320px;
+    min-width: 200px;
+    flex-grow: 1;
 }
 
 .one {
     background: red;
-    flex-shrink: 1;
 }
 
 .two {
     background: blue;
-    flex-shrink: 5;
 }
 
 .three {
     background: green;
-    flex-shrink: 6;
 }
 /* Flex Container: End */
