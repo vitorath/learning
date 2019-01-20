@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import app.ws.exceptions.UserServiceException;
 import app.ws.service.UserService;
 import app.ws.shared.dto.UserDto;
 import app.ws.ui.model.request.UserDetailsRequestModel;
+import app.ws.ui.model.response.ErrorMessages;
 import app.ws.ui.model.response.UserRest;
 
 @RestController
@@ -25,7 +27,7 @@ public class UserController {
 	UserService userService;
 	
 	@GetMapping(path="/{id}", 
-			produces= { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public UserRest getUser(@PathVariable("id") String id) {
 		UserRest returnValue = new UserRest();
 		
@@ -36,11 +38,14 @@ public class UserController {
 	}
 	
 	@PostMapping(
-			consumes={ MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE } , 
-			produces= { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+			consumes={ MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE } , 
+			produces= { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) {
 		
 		UserRest returnValue = new UserRest();
+		
+		if (userDetails.getFirstName().isEmpty())
+			throw new UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(userDetails, userDto);
