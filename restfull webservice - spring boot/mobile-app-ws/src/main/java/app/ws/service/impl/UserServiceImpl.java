@@ -16,7 +16,6 @@ import app.ws.io.repositories.UserRepository;
 import app.ws.service.UserService;
 import app.ws.shared.Utils;
 import app.ws.shared.dto.UserDto;
-import app.ws.ui.model.response.ErrorMessage;
 import app.ws.ui.model.response.ErrorMessages;
 
 @Service
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService {
 		UserEntity userEntity = userRepository.findByUserId(userId);
 		
 		if (userEntity == null) 
-			throw new UsernameNotFoundException(userId);
+			throw new UsernameNotFoundException("User with ID: " + userId + " not found");
 		
 		BeanUtils.copyProperties(userEntity, returnValue);
 		return returnValue;
@@ -99,6 +98,16 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(updatedUSerDetails, returnValue);
 		
 		return returnValue;
+	}
+
+	@Override
+	public void deleteUser(String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		
+		if (userEntity == null) 
+			throw new UserServiceException(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		
+		userRepository.delete(userEntity);	
 	}
 
 }
