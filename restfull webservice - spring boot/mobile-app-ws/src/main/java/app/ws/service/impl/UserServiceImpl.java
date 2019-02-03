@@ -3,6 +3,7 @@ package app.ws.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,23 +34,28 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	ModelMapper modelMapper;
+	
 	@Override
 	public UserDto createUser(UserDto user) {
 		
 		if (userRepository.findByEmail(user.getEmail()) != null)
 			throw new RuntimeException("Record already exists");
 		
-		UserEntity userEntity = new UserEntity();
-		BeanUtils.copyProperties(user, userEntity);
+		user.getAddresses().forEach(address -> {
+			address.setUserDetails(user);
+			address.setAddressId(utils.generateAddressId(30));
+		});
+		
+		UserEntity userEntity = modelMapper.map(user, UserEntity.class);
 		
 		String publicUserId = utils.generateUserId(30);
 		userEntity.setUserId(publicUserId);
 		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
 		UserEntity storedUserDetails = userRepository.save(userEntity);
-		
-		UserDto returnValue = new UserDto();
-		BeanUtils.copyProperties(storedUserDetails, returnValue);
+		UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 		
 		return returnValue;
 	}
