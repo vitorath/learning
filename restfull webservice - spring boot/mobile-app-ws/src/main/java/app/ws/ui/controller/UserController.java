@@ -2,6 +2,7 @@ package app.ws.ui.controller;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -117,15 +118,24 @@ public class UserController {
 	@GetMapping(path="/{id}/addresses", 
 			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public List<AddressRest> getUserAddresses(@PathVariable("id") String id) {
-		List<AddressRest> returnValue = new ArrayList<>();
 		List<AddressDto> addressesDto = addressService.getAddresses(id);
 		
 		if (addressesDto != null && !addressesDto.isEmpty()) {
 			Type listType = new TypeToken<List<AddressRest>>() {}.getType();
-			returnValue = modelMapper.map(addressesDto, listType);	
+			List<AddressRest> addressesListRestModel = modelMapper.map(addressesDto, listType);	
+			
+			addressesListRestModel.forEach(addressRest -> {
+				Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(id, addressRest.getAddressId())).withSelfRel();
+				addressRest.add(addressLink);
+
+				Link userLink = linkTo(methodOn(UserController.class).getUser(id)).withRel("user");
+				addressRest.add(userLink);	
+			});
+			
+			return addressesListRestModel;
 		}
 		
-		return returnValue;
+		return Collections.emptyList();
 	}
 	
 	@GetMapping(path="/{userId}/addresses/{addressId}", 
