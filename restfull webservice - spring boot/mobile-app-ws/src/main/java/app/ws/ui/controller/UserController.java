@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -116,8 +118,8 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/{id}/addresses", 
-			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public List<AddressRest> getUserAddresses(@PathVariable("id") String id) {
+			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json" })
+	public Resources<AddressRest> getUserAddresses(@PathVariable("id") String id) {
 		List<AddressDto> addressesDto = addressService.getAddresses(id);
 		
 		if (addressesDto != null && !addressesDto.isEmpty()) {
@@ -132,15 +134,15 @@ public class UserController {
 				addressRest.add(userLink);	
 			});
 			
-			return addressesListRestModel;
+			return new Resources<>(addressesListRestModel);
 		}
 		
-		return Collections.emptyList();
+		return new Resources<>(Collections.emptyList());
 	}
 	
 	@GetMapping(path="/{userId}/addresses/{addressId}", 
-			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-	public AddressRest getUserAddress(@PathVariable("userId") String userId, @PathVariable("addressId") String addressId) {
+			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE, "application/hal+json" })
+	public Resource<AddressRest> getUserAddress(@PathVariable("userId") String userId, @PathVariable("addressId") String addressId) {
 		AddressDto addressDto = addressService.getAddress(addressId);
 		
 		Link addressLink = linkTo(methodOn(UserController.class).getUserAddress(userId, addressId)).withSelfRel();
@@ -152,7 +154,7 @@ public class UserController {
 		addressRestModel.add(userLink);
 		addressRestModel.add(addressesLink);
 		
-		return addressRestModel;
+		return new Resource<>(addressRestModel);
 	}
 
 }
