@@ -7,6 +7,8 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -128,8 +130,16 @@ public class UserController {
 			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public AddressRest getUserAddress(@PathVariable("userId") String userId, @PathVariable("addressId") String addressId) {
 		AddressDto addressDto = addressService.getAddress(addressId);
+		Link addressLink = ControllerLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses").slash(addressId).withSelfRel();
+		Link userLink = ControllerLinkBuilder.linkTo(UserController.class).slash(userId).withRel("user");
+		Link addressesLink = ControllerLinkBuilder.linkTo(UserController.class).slash(userId).slash("addresses").withRel("addresses");
 		
-		return modelMapper.map(addressDto, AddressRest.class);
+		AddressRest addressRestModel = modelMapper.map(addressDto, AddressRest.class);
+		addressRestModel.add(addressLink);
+		addressRestModel.add(userLink);
+		addressRestModel.add(addressesLink);
+		
+		return addressRestModel;
 	}
 
 }
