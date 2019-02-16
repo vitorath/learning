@@ -53,7 +53,7 @@ public class UserController {
 	@GetMapping(path="/{id}", 
 			produces= {  MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 	public UserRest getUser(@PathVariable("id") String id) {
-		
+		ModelMapper modelMapper = new ModelMapper();
 		UserDto userDto = userService.getUserByUserId(id);
 		UserRest returnValue = modelMapper.map(userDto, UserRest.class);
 		
