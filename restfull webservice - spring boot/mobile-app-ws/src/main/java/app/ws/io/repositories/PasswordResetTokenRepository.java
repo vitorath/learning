@@ -1,4 +1,10 @@
 package app.ws.io.repositories;
 
-public interface PasswordResetTokenRepository {
+import app.ws.io.entity.PasswordResetTokenEntity;
+import org.springframework.data.repository.CrudRepository;
+
+public interface PasswordResetTokenRepository extends CrudRepository<PasswordResetTokenEntity, Long> {
+
+    PasswordResetTokenEntity findByToken(String token);
+
 }

@@ -1,22 +1,23 @@
 package app.ws.shared;
 
-import java.security.SecureRandom;
-import java.util.Date;
-import java.util.Random;
-
 import app.ws.security.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.security.SecureRandom;
+import java.util.Date;
+import java.util.Random;
+
+@Service
 public class Utils {
 
 	private final Random RANDOM = new SecureRandom();
 	private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz";
-	
-	public String generateUserId(int length) {
+
+    public String generateUserId(int length) {
 		return generateRandomString(length);
 	}
 	
@@ -46,6 +47,15 @@ public class Utils {
 		String token = Jwts.builder()
 				.setSubject( userId )
 				.setExpiration( new Date( System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME ) )
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
+				.compact();
+		return token;
+	}
+
+	public static String generatePasswordResetToken(String userId) {
+		String token = Jwts.builder()
+				.setSubject( userId )
+				.setExpiration( new Date( System.currentTimeMillis() + SecurityConstants.PASSWORD_RESET_EXPIRATION_TIME ) )
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret())
 				.compact();
 		return token;

@@ -1,18 +1,17 @@
 package app.ws.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import app.ws.io.entity.AddressEntity;
 import app.ws.io.entity.UserEntity;
 import app.ws.io.repositories.AddressRepository;
 import app.ws.io.repositories.UserRepository;
 import app.ws.service.AddressService;
 import app.ws.shared.dto.AddressDto;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AddressServiceImpl implements AddressService{

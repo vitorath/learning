@@ -1,15 +1,13 @@
 package app.ws.service.impl;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
 import app.ws.exceptions.UserServiceException;
 import app.ws.io.entity.AddressEntity;
+import app.ws.io.entity.UserEntity;
+import app.ws.io.repositories.UserRepository;
+import app.ws.shared.AmazonSES;
+import app.ws.shared.Utils;
 import app.ws.shared.dto.AddressDto;
+import app.ws.shared.dto.UserDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,14 +18,15 @@ import org.modelmapper.TypeToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import app.ws.io.entity.UserEntity;
-import app.ws.io.repositories.UserRepository;
-import app.ws.shared.Utils;
-import app.ws.shared.dto.UserDto;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 class UserServiceImplTest {
 
@@ -36,7 +35,10 @@ class UserServiceImplTest {
 	
 	@Mock
 	UserRepository userRepository;
-	
+
+	@Mock
+	AmazonSES amazonSES;
+
 	@Mock
 	Utils utils;
 	
@@ -81,13 +83,28 @@ class UserServiceImplTest {
 	}
 
 	@Test
+	void testCreateUser_CreaterUserServiceException() {
+		when(userRepository.findByEmail(anyString())).thenReturn(userEntity);
+		UserDto userDto = new UserDto();
+		userDto.setFirstName("Vitor");
+		userDto.setLastName("Thomazini");
+		userDto.setPassword("123456");
+		userDto.setEmail("vitor.a.th@test.com");
+		userDto.setAddresses(getAddressesDto());
+
+		assertThrows(UserServiceException.class, () ->{
+			userService.createUser(userDto);
+		});
+	}
+
+	@Test
 	void testCreateUser() {
 		when(userRepository.findByEmail(anyString())).thenReturn(null);
 		when(utils.generateAddressId(anyInt())).thenReturn("SDFJJGHdfjsdjf2655");
 		when(utils.generateUserId(anyInt())).thenReturn(userId);
 		when(bCryptPasswordEncoder.encode(anyString())).thenReturn(encryptedPassword);
 		when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
-
+		doNothing().when(amazonSES).verifyEmail(any(UserDto.class));
 
 		UserDto userDto = new UserDto();
 		userDto.setFirstName("Vitor");

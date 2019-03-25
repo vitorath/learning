@@ -1,10 +1,14 @@
 package app.ws.ui.controller;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import app.ws.exceptions.UserServiceException;
+import app.ws.service.AddressService;
+import app.ws.service.UserService;
+import app.ws.shared.dto.AddressDto;
+import app.ws.shared.dto.UserDto;
+import app.ws.ui.model.request.PasswordResetModel;
+import app.ws.ui.model.request.PasswordResetRequestModel;
+import app.ws.ui.model.request.UserDetailsRequestModel;
+import app.ws.ui.model.response.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,27 +16,12 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import app.ws.exceptions.UserServiceException;
-import app.ws.service.AddressService;
-import app.ws.service.UserService;
-import app.ws.shared.dto.AddressDto;
-import app.ws.shared.dto.UserDto;
-import app.ws.ui.model.request.UserDetailsRequestModel;
-import app.ws.ui.model.response.AddressRest;
-import app.ws.ui.model.response.ErrorMessages;
-import app.ws.ui.model.response.OperationStatusModel;
-import app.ws.ui.model.response.RequestOperationStatus;
-import app.ws.ui.model.response.UserRest;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -171,6 +160,41 @@ public class UserController {
 		}
 
 		return returnValue;
+	}
+
+	@PostMapping(path = "/password-reset-request",
+			produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public OperationStatusModel requestReset(@RequestBody PasswordResetRequestModel passwordResetRequestModel) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+
+		boolean operationResult = userService.requestPasswordReset(passwordResetRequestModel.getEmail());
+
+		returnValue.setOperationName(RequestOperationName.REQUEST_PASSWORD_RESET.name());
+		returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
+
+		if (operationResult) {
+			returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		}
+
+		return returnValue;
+	}
+
+	@PostMapping(path = "/password-reset",
+			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+	public OperationStatusModel resetPassword(@RequestBody PasswordResetModel passwordResetModel) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+
+		boolean  operationResult = userService.resetPassword(passwordResetModel.getToken(),
+				passwordResetModel.getPassword());
+
+		returnValue.setOperationName(RequestOperationName.PASSWORD_RESET.name());
+		returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
+
+		if (operationResult) {
+			returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		}
+		return  returnValue;
 	}
 
 }

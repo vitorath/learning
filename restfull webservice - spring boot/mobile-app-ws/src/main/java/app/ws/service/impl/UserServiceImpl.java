@@ -1,9 +1,15 @@
 package app.ws.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import app.ws.exceptions.UserServiceException;
+import app.ws.io.entity.PasswordResetTokenEntity;
+import app.ws.io.entity.UserEntity;
+import app.ws.io.repositories.PasswordResetTokenRepository;
+import app.ws.io.repositories.UserRepository;
+import app.ws.service.UserService;
 import app.ws.shared.AmazonSES;
+import app.ws.shared.Utils;
+import app.ws.shared.dto.UserDto;
+import app.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import app.ws.exceptions.UserServiceException;
-import app.ws.io.entity.UserEntity;
-import app.ws.io.repositories.UserRepository;
-import app.ws.service.UserService;
-import app.ws.shared.Utils;
-import app.ws.shared.dto.UserDto;
-import app.ws.ui.model.response.ErrorMessages;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,10 +35,13 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
+
 	@Autowired
-	ModelMapper modelMapper;
-	
+	PasswordResetTokenRepository passwordResetTokenRepository;
+
+	@Autowired
+	AmazonSES amazonSES;
+
 	@Override
 	public UserDto createUser(UserDto user) {
 		
@@ -61,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		UserEntity storedUserDetails = userRepository.save(userEntity);
 		UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 
-		new AmazonSES().verifyEmail(returnValue);
+		amazonSES.verifyEmail(returnValue);
 
 		return returnValue;
 	}
@@ -161,6 +165,62 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return returnValue;
+	}
+
+	@Override
+	public boolean requestPasswordReset(String email) {
+		boolean returValue = false;
+
+		UserEntity userEntity = userRepository.findByEmail(email);
+
+		if (userEntity == null) {
+			return  returValue;
+		}
+
+		String token = Utils.generatePasswordResetToken(userEntity.getUserId());
+
+		PasswordResetTokenEntity passwordResetTokenEntity = new PasswordResetTokenEntity();
+		passwordResetTokenEntity.setToken(token);
+		passwordResetTokenEntity.setUserDetails(userEntity);
+		passwordResetTokenRepository.save(passwordResetTokenEntity);
+
+		returValue = new AmazonSES().sendPasswordResetRequest(userEntity.getFirstName(), userEntity.getEmail(), token);
+
+		return  returValue;
+	}
+
+	@Override
+	public boolean resetPassword(String token, String password) {
+		boolean returnValue = false;
+
+		if(Utils.hasTokenExpired(token)) {
+			return returnValue;
+		}
+
+		PasswordResetTokenEntity passwordResetTokenEntity = passwordResetTokenRepository.findByToken(token);
+
+		if (passwordResetTokenEntity == null) {
+			return  returnValue;
+		}
+
+		// Prepare new password
+		String encodedPassword = bCryptPasswordEncoder.encode(password);
+
+		// Update User password in database
+		UserEntity userEntity = passwordResetTokenEntity.getUserDetails();
+		userEntity.setEncryptedPassword(encodedPassword);
+		UserEntity savedUserEntity = userRepository.save(userEntity);
+
+		// Verify if password was saved successfully
+		if (savedUserEntity != null && savedUserEntity.getEncryptedPassword().equalsIgnoreCase(encodedPassword)) {
+			returnValue = true;
+		}
+
+		// Remove Password Reset token from database
+		passwordResetTokenRepository.delete(passwordResetTokenEntity);
+
+		return returnValue;
+
 	}
 
 }

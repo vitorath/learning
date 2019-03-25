@@ -1,5 +1,6 @@
 package app.ws.security;
 
+import app.ws.service.UserService;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,8 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import app.ws.service.UserService;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter{
@@ -33,6 +32,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
 				.permitAll()
 				.antMatchers(HttpMethod.GET, SecurityConstants.VERIFICATION_EMAIL_URL)
+				.permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_REQUEST_URL)
+				.permitAll()
+				.antMatchers(HttpMethod.POST, SecurityConstants.PASSWORD_RESET_URL)
 				.permitAll()
 				.anyRequest().authenticated().and()
 				.addFilter(getAuthenticationFilter())

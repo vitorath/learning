@@ -1,8 +1,8 @@
 package app.ws.service;
 
-import java.util.List;
-
 import app.ws.shared.dto.AddressDto;
+
+import java.util.List;
 
 public interface AddressService {
 	List<AddressDto> getAddresses(String userId);

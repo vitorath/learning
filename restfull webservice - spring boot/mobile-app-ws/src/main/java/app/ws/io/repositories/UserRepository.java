@@ -1,9 +1,8 @@
 package app.ws.io.repositories;
 
+import app.ws.io.entity.UserEntity;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import app.ws.io.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
