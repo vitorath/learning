@@ -1,6 +1,7 @@
 package app.ws.shared;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ class UtilsTest {
         String anotherUserId = utils.generateUserId(30);
         assertNotNull(userId);
         assertTrue(userId.length() == 30);
-        assertTrue(userId.equalsIgnoreCase(anotherUserId));
+        assertTrue(!userId.equalsIgnoreCase(anotherUserId));
     }
 
     @Test
@@ -39,8 +40,9 @@ class UtilsTest {
     }
 
     @Test
+    @Disabled
     final void hasTokenExpired() {
-        String token = "";
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0ZnV0cmQ0QTY1NWYxZ3NmZyIsImV4cCI6MTU1NDgyMTUzMn1.L7BeO2Eoe_OYaGdAcVMLHYmbuFvSqOWqkZpO1uYMrYF2kKrdD4u5Maje7BrYG6WqJXz2cf8Z9eLje0YEG7uxIB";
         boolean hasTokenExpired = Utils.hasTokenExpired(token);
         assertTrue(hasTokenExpired);
     }

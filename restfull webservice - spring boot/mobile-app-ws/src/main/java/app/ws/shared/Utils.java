@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -34,7 +33,7 @@ public class Utils {
 		return new String(returnValue);
 	}
 
-	public static boolean hasTokenExpired( String token ) {]
+	public static boolean hasTokenExpired( String token ) {
 		boolean returnedValue = false;
 		try {
 			Claims claims = Jwts.parser()
