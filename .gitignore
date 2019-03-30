@@ -1,2 +1,42 @@
 
 restfull webservice - spring boot/mobile-app-ws/\.attach_pid6705
+
+restfull webservice - spring boot/mobile-app-ws/\.idea/workspace\.xml
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/exceptions/AppExceptionsHandler\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/io/entity/AddressEntity\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/io/entity/UserEntity\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/MobileAppWsApplication\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/security/AuthenticationFilter\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/security/AuthorizationFilter\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/security/SecurityConstants\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/security/WebSecurity\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/service/impl/AddressServiceImpl\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/service/impl/UserServiceImpl\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/service/UserService\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/shared/AmazonSES\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/shared/Utils\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/ui/controller/RequestOperationName\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/ui/controller/UserController\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/ui/controller/UserController\$1\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/classes/app/ws/ui/model/response/RequestOperationStatus\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/test-classes/app/ws/service/impl/UserServiceImplTest\.class
+
+restfull webservice - spring boot/mobile-app-ws/target/test-classes/app/ws/service/impl/UserServiceImplTest\$1\.class
